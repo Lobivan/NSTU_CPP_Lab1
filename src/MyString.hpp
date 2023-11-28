@@ -30,6 +30,7 @@ class MyString {
 
   MyString(const MyString &other)  // Конструктор копирования
       : curSize(other.curSize), maxSize(other.maxSize) {
+    data = new char[maxSize]();
     for (int i = 0; i < maxSize; i++) {
       data[i] = other.data[i];
     }
@@ -42,4 +43,9 @@ class MyString {
   }
   size_t size() { return curSize; }
   size_t max_size() { return maxSize; }
+  void print() {
+    for (int i = 0; i < curSize; i++) {
+      std::cout << data[i];
+    };
+  }
 };
