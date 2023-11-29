@@ -36,6 +36,17 @@ int main(void) {
   str4.append(str4);
   str4.print_info();
 
+  std::cout << "\n Демонстрация работы метода поиска подстроки в строке: \n";
+  std::cout
+      << "Поиск подстроки \'123\' в строке \'01234012345670123401234567\': \n";
+  char substr[] = "123";
+  size_t res = str4.find(substr);
+  do {
+    std::cout << res << " ";
+    res = str4.find(substr, ++res);
+  } while (res != (size_t)-1);
+  std::cout << "\n";
+
   delete[] arr;
   return 0;
 }

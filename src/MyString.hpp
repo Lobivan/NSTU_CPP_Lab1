@@ -80,6 +80,34 @@ class MyString {
     return *this;
   }
 
+  size_t find(const MyString &str, size_t pos) const {
+    size_t res = -1;
+    if (str.size() == 0) {
+      return res;
+    }
+    for (int i = pos; i <= size() - str.size(); i++) {
+      if (data[i] == str.data[0]) {
+        int j = 1;
+        for (; j < str.size(); j++) {
+          if (data[i + j] != str.data[j]) {
+            break;
+          }
+        }
+        if (j == str.size()) {
+          res = i;
+          break;
+        }
+      }
+    }
+    return res;
+  }
+
+  size_t find(const MyString &str) const { return find(str, 0); }
+
+  size_t find(char *str, size_t pos) const { return find(MyString(str), pos); }
+
+  size_t find(char *str) const { return find(str, 0); }
+
   char *to_char() const {
     char *res = new char[size() + 1]();
     for (int i = 0; i < size(); i++) {
