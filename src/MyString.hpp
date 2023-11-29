@@ -35,17 +35,29 @@ class MyString {
       data[i] = other.data[i];
     }
   }
+
   ~MyString() {  // Деструктор
     delete[] data;
     curSize = 0;
     maxSize = 0;
     data = nullptr;
   }
+
   size_t size() { return curSize; }
+
   size_t max_size() { return maxSize; }
+
   void print() {
     for (int i = 0; i < curSize; i++) {
       std::cout << data[i];
     };
+  }
+
+  void print_info() {
+    std::cout << "размер строки: " << size() << "\n";
+    std::cout << "максимальный размер строки: " << max_size() << "\n";
+    std::cout << "строка: \'";
+    print();
+    std::cout << "\'\n";
   }
 };
