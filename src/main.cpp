@@ -47,6 +47,19 @@ int main(void) {
   } while (res != (size_t)-1);
   std::cout << "\n";
 
+  std::cout << "\n Демонстрация работы метода вставки по индексу: \n";
+  std::cout << "Втавка подстроки \'?\' перед каждой 1 в строке "
+               "\'01234012345670123401234567\': \n";
+  char substr1[] = "1";
+  char substr2[] = "?";
+  size_t res1 = str4.find(substr);
+  do {
+    str4.insert(res, substr2);
+    res++;
+    res = str4.find(substr, ++res);
+  } while (res != (size_t)-1);
+  str4.print_info();
+
   delete[] arr;
   return 0;
 }

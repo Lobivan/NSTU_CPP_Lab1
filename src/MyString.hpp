@@ -61,7 +61,7 @@ class MyString {
     }
   }
 
-  MyString append(char *arr) {
+  MyString &append(char *arr) {
     size_t arrlen = strlen(arr);
     while (size() + arrlen > max_size()) {
       resize(max_size() * 2);
@@ -73,7 +73,7 @@ class MyString {
     return *this;
   }
 
-  MyString append(const MyString &str) {
+  MyString &append(const MyString &str) {
     char *tmp = str.to_char();
     append(tmp);
     delete[] tmp;
@@ -107,6 +107,25 @@ class MyString {
   size_t find(char *str, size_t pos) const { return find(MyString(str), pos); }
 
   size_t find(char *str) const { return find(str, 0); }
+
+  MyString &insert(size_t pos, const MyString &str) {
+    while (size() + str.size() > max_size()) {
+      resize(max_size() * 2);
+    }
+    char *tmp = to_char();
+    for (int i = 0; i < str.size(); i++) {
+      data[i + pos] = str.data[i];
+    }
+    curSize = size() + str.size();
+    for (int i = pos + str.size(); i < size(); i++) {
+      data[i] = tmp[i - pos];
+    }
+
+    delete[] tmp;
+    return *this;
+  }
+
+  MyString &insert(size_t pos, char *str) { return insert(pos, MyString(str)); }
 
   char *to_char() const {
     char *res = new char[size() + 1]();
