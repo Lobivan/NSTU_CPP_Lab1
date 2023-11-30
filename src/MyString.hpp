@@ -44,10 +44,13 @@ class MyString {
     data = nullptr;
   }
 
+  // Метод, возвращающий текущий размер строки
   size_t size() const { return curSize; }
 
+  // Метод, возвращающий максимальный размер строки
   size_t max_size() const { return maxSize; }
 
+  // Метод для изменения максисального размера строки
   void resize(size_t n) {
     if (n != max_size()) {
       char *new_data = new char[n]();
@@ -61,6 +64,7 @@ class MyString {
     }
   }
 
+  // Методы, добавляющий массив символов в конец строки
   MyString &append(char *arr) {
     size_t arrlen = strlen(arr);
     while (size() + arrlen > max_size()) {
@@ -80,6 +84,7 @@ class MyString {
     return *this;
   }
 
+  // Методы поиска подстроки в строке (начиная с позиции pos)
   size_t find(const MyString &str, size_t pos) const {
     size_t res = -1;
     if (str.size() == 0) {
@@ -108,6 +113,7 @@ class MyString {
 
   size_t find(char *str) const { return find(str, 0); }
 
+  // Методы вставки подстроки в строку перед позицией pos
   MyString &insert(size_t pos, const MyString &str) {
     while (size() + str.size() > max_size()) {
       resize(max_size() * 2);
@@ -127,11 +133,13 @@ class MyString {
 
   MyString &insert(size_t pos, char *str) { return insert(pos, MyString(str)); }
 
+  // Метод очистки строки
   MyString &erase() {
     curSize = 0;
     return *this;
   }
 
+  // Метод превращения строки в массив символов
   char *to_char() const {
     char *res = new char[size() + 1]();
     for (int i = 0; i < size(); i++) {
@@ -141,12 +149,14 @@ class MyString {
     return res;
   }
 
+  // Метод вывода строки на экран
   void print() const {
     for (int i = 0; i < curSize; i++) {
       std::cout << data[i];
     };
   }
 
+  // Метод печати всей информации о строке
   void print_info() const {
     std::cout << "размер строки: " << size() << "\n";
     std::cout << "максимальный размер строки: " << max_size() << "\n";
