@@ -118,7 +118,7 @@ class MyString {
     }
     curSize = size() + str.size();
     for (int i = pos + str.size(); i < size(); i++) {
-      data[i] = tmp[i - pos];
+      data[i] = tmp[i - str.size()];
     }
 
     delete[] tmp;
