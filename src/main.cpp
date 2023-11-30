@@ -60,6 +60,12 @@ int main(void) {
   } while (res1 != (size_t)-1);
   str4.print_info();
 
+  std::cout << "\n Демонстрация работы метода очистки строки \n";
+  str4.print_info();
+  std::cout << "очистка \n";
+  str4.erase();
+  str4.print_info();
+
   delete[] arr;
   return 0;
 }

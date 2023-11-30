@@ -127,6 +127,11 @@ class MyString {
 
   MyString &insert(size_t pos, char *str) { return insert(pos, MyString(str)); }
 
+  MyString &erase() {
+    curSize = 0;
+    return *this;
+  }
+
   char *to_char() const {
     char *res = new char[size() + 1]();
     for (int i = 0; i < size(); i++) {
