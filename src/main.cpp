@@ -1,13 +1,24 @@
 #include "MyString.hpp"
 
-int main(void) {
+void default_costructor_test() {
   std::cout << "\n Демонстрация работы конструктора по умолчанию: \n";
-  MyString str1;
-  str1.print_info();
+  MyString str;  // Вызов конструктора по умолчанию
+  str.print_info();
+  // Деструктор вызывается в конце жизненного цикла объекта, в данном случае - в
+  // конце функции
+}
 
+void param_costructor_test() {
   std::cout << "\n Демонстрация работы конструктора с параметром размера: \n";
-  MyString str2(4);
-  str2.print_info();
+  MyString str(4);  // Вызов конструктора с параметром размера
+  str.print_info();
+  // Вызов деструктора
+}
+
+int main(void) {
+  default_costructor_test();
+
+  param_costructor_test();
 
   std::cout << "\n Демонстрация работы конструктора с параметром массива "
                "символов: \n";
@@ -16,11 +27,11 @@ int main(void) {
   for (int i = 0; i < arrlen - 1; i++) {
     arr[i] = (int)'0' + i;
   }
-  MyString str3(arr);
+  MyString str3(arr);  // Вызов конструктора с параметром
   str3.print_info();
 
   std::cout << "\n Демонстрация работы конструктора копирования: \n";
-  MyString str4(str3);
+  MyString str4(str3);  // Вызов конструктора копирования
   str4.print_info();
 
   std::cout << "\n Демонстрация работы метода изменения размера: \n";
@@ -68,4 +79,5 @@ int main(void) {
 
   delete[] arr;
   return 0;
+  // Вызов деструктора для str3 и str4
 }
