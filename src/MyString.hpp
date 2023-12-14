@@ -1,3 +1,4 @@
+// MyString.hpp
 #pragma once
 
 #include <algorithm>
@@ -11,206 +12,62 @@ class MyString {
   size_t maxSize;  // максимальная длина массива строки
 
  public:
-  MyString()  // Конструктор по умолчанию
-      : data(nullptr), curSize(0), maxSize(0) {}
-
-  MyString(size_t size)  // Конструктор с параметром размера
-      : curSize(size), maxSize(size) {
-    data = new char[maxSize]();
-  }
-
-  MyString(char *arr) {  // Конструктор с параметром массива символов
-    size_t size = strlen(arr);
-    maxSize = size;
-    curSize = size;
-    data = new char[maxSize]();
-    for (int i = 0; i < maxSize; i++) {
-      data[i] = arr[i];
-    }
-  }
-
-  MyString(const MyString &other)  // Конструктор копирования
-      : curSize(other.curSize), maxSize(other.maxSize) {
-    data = new char[maxSize]();
-    for (int i = 0; i < maxSize; i++) {
-      data[i] = other.data[i];
-    }
-  }
-
-  ~MyString() {  // Деструктор
-    delete[] data;
-    curSize = 0;
-    maxSize = 0;
-    data = nullptr;
-  }
+  MyString();             // Конструктор по умолчанию
+  MyString(size_t size);  // Конструктор с параметром размера
+  MyString(char *arr);  // Конструктор с параметром массива символов
+  MyString(const MyString &other);  // Конструктор копирования
+  ~MyString();                      // Деструктор
 
   // Метод, возвращающий текущий размер строки
-  size_t size() const { return curSize; }
+  size_t size() const;
 
   // Метод, возвращающий максимальный размер строки
-  size_t max_size() const { return maxSize; }
+  size_t max_size() const;
 
   // Метод для изменения максисального размера строки
-  void resize(size_t n) {
-    if (n != max_size()) {
-      char *new_data = new char[n]();
-      curSize = std::min(n, size());
-      maxSize = n;
-      for (int i = 0; i < curSize; i++) {
-        new_data[i] = data[i];
-      }
-      delete[] data;
-      data = new_data;
-    }
-  }
+  void resize(size_t n);
 
   // Методы, добавляющий массив символов в конец строки
-  MyString &append(char *arr) {
-    size_t arrlen = strlen(arr);
-    while (size() + arrlen > max_size()) {
-      resize(max_size() * 2);
-    }
-    for (int i = 0; i < arrlen; i++) {
-      data[size() + i] = arr[i];
-    }
-    curSize += arrlen;
-    return *this;
-  }
-
-  MyString &append(const MyString &str) {
-    char *tmp = str.to_char();
-    append(tmp);
-    delete[] tmp;
-    return *this;
-  }
+  MyString &append(char *arr);
+  MyString &append(const MyString &str);
 
   // Методы поиска подстроки в строке (начиная с позиции pos)
-  size_t find(const MyString &str, size_t pos) const {
-    size_t res = -1;
-    if (str.size() == 0) {
-      return res;
-    }
-    for (int i = pos; i <= size() - str.size(); i++) {
-      if (data[i] == str.data[0]) {
-        int j = 1;
-        for (; j < str.size(); j++) {
-          if (data[i + j] != str.data[j]) {
-            break;
-          }
-        }
-        if (j == str.size()) {
-          res = i;
-          break;
-        }
-      }
-    }
-    return res;
-  }
-
-  size_t find(const MyString &str) const { return find(str, 0); }
-
-  size_t find(char *str, size_t pos) const { return find(MyString(str), pos); }
-
-  size_t find(char *str) const { return find(str, 0); }
+  size_t find(const MyString &str, size_t pos) const;
+  size_t find(const MyString &str) const;
+  size_t find(char *str, size_t pos) const;
+  size_t find(char *str) const;
 
   // Методы вставки подстроки в строку перед позицией pos
-  MyString &insert(size_t pos, const MyString &str) {
-    while (size() + str.size() > max_size()) {
-      resize(max_size() * 2);
-    }
-    char *tmp = to_char();
-    for (int i = 0; i < str.size(); i++) {
-      data[i + pos] = str.data[i];
-    }
-    curSize = size() + str.size();
-    for (int i = pos + str.size(); i < size(); i++) {
-      data[i] = tmp[i - str.size()];
-    }
-
-    delete[] tmp;
-    return *this;
-  }
-
-  MyString &insert(size_t pos, char *str) { return insert(pos, MyString(str)); }
+  MyString &insert(size_t pos, const MyString &str);
+  MyString &insert(size_t pos, char *str);
 
   // Метод очистки строки
-  MyString &erase() {
-    curSize = 0;
-    return *this;
-  }
+  MyString &erase();
 
   // Метод превращения строки в массив символов
-  char *to_char() const {
-    char *res = new char[size() + 1]();
-    for (int i = 0; i < size(); i++) {
-      res[i] = data[i];
-    }
-    res[size()] = '\0';
-    return res;
-  }
+  char *to_char() const;
 
   // Метод вывода строки на экран
-  void print() const {
-    for (int i = 0; i < curSize; i++) {
-      std::cout << data[i];
-    };
-  }
+  void print() const;
 
   // Метод печати всей информации о строке
-  void print_info() const {
-    std::cout << "размер строки: " << size() << "\n";
-    std::cout << "максимальный размер строки: " << max_size() << "\n";
-    std::cout << "строка: \'";
-    print();
-    std::cout << "\'\n";
-  }
+  void print_info() const;
 
   // сложение со строкой типа char*
-  MyString operator+(char *arr) const {
-    MyString res(*this);
-    res.append(arr);
-    return res;
-  }
+  MyString operator+(char *arr) const;
   // используется дружественная функция для сложения со строкой типа char*,
   // когда эта строка является левым операндом
-  friend MyString operator+(char *arr, MyString const &self) {
-    MyString res(self);
-    res.append(arr);
-    return res;
-  }
+  friend MyString operator+(char *arr, MyString const &self);
 
   // сложение 2-х объектов класса
-  MyString operator+(const MyString &str) const {
-    MyString res(*this);
-    res.append(str);
-    return res;
-  }
+  MyString operator+(const MyString &str) const;
 
   // операция вычитания как удаление подстроки
-  MyString operator-(const MyString &str) const {
-    MyString res(*this);
-    size_t pos = res.find(str);
-    if (pos != (size_t)-1) {
-      for (int i = pos; i < curSize - str.curSize; i++) {
-        res.data[i] = res.data[i + str.curSize];
-      }
-      res.curSize -= str.curSize;
-    }
-    return res;
-  }
+  MyString operator-(const MyString &str) const;
 
   // операция индексирования
-  char &operator[](size_t pos) { return data[pos]; }
+  char &operator[](size_t pos);
 
   // операция присваивания
-  MyString &operator=(const MyString &other) {
-    if (this != &other) {
-      this->resize(other.maxSize);
-      for (int i = 0; i < other.curSize; i++) {
-        data[i] = other.data[i];
-      }
-      curSize = other.curSize;
-    }
-    return *this;
-  }
+  MyString &operator=(const MyString &other);
 };
