@@ -164,4 +164,53 @@ class MyString {
     print();
     std::cout << "\'\n";
   }
+
+  // сложение со строкой типа char*
+  MyString operator+(char *arr) const {
+    MyString res(*this);
+    res.append(arr);
+    return res;
+  }
+  // используется дружественная функция для сложения со строкой типа char*,
+  // когда эта строка является левым операндом
+  friend MyString operator+(char *arr, MyString const &self) {
+    MyString res(self);
+    res.append(arr);
+    return res;
+  }
+
+  // сложение 2-х объектов класса
+  MyString operator+(const MyString &str) const {
+    MyString res(*this);
+    res.append(str);
+    return res;
+  }
+
+  // операция вычитания как удаление подстроки
+  MyString operator-(const MyString &str) const {
+    MyString res(*this);
+    size_t pos = res.find(str);
+    if (pos != (size_t)-1) {
+      for (int i = pos; i < curSize - str.curSize; i++) {
+        res.data[i] = res.data[i + str.curSize];
+      }
+      res.curSize -= str.curSize;
+    }
+    return res;
+  }
+
+  // операция индексирования
+  char &operator[](size_t pos) { return data[pos]; }
+
+  // операция присваивания
+  MyString &operator=(const MyString &other) {
+    if (this != &other) {
+      this->resize(other.maxSize);
+      for (int i = 0; i < other.curSize; i++) {
+        data[i] = other.data[i];
+      }
+      curSize = other.curSize;
+    }
+    return *this;
+  }
 };
