@@ -1,8 +1,7 @@
 // MyString.hpp
 #pragma once
 
-#include <algorithm>
-#include <cstring>
+#include <fstream>
 #include <iostream>
 
 class MyString {
@@ -70,4 +69,22 @@ class MyString {
 
   // операция присваивания
   MyString &operator=(const MyString &other);
+
+  // операция вывода в поток
+  friend std::ostream &operator<<(std::ostream &os, MyString &str);
+
+  // операция ввода из поток
+  friend std::istream &operator>>(std::istream &is, MyString &str);
+
+  // операция вывода в файловый поток
+  friend std::ofstream &operator<<(std::ofstream &os, MyString &str);
+
+  // операция ввода из файлового потока
+  friend std::ifstream &operator>>(std::ifstream &is, MyString &str);
+
+  // операция вывода в файловый поток(в двоичном виде)
+  void writeBinary(std::ofstream &os);
+
+  // операция ввода из файлового потока(в двоичном виде)
+  void readBinary(std::ifstream &is);
 };

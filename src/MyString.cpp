@@ -1,5 +1,8 @@
 #include "MyString.hpp"
 
+#include <algorithm>
+#include <cstring>
+
 MyString::MyString()  // Конструктор по умолчанию
     : data(nullptr), curSize(0), maxSize(0) {}
 

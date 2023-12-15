@@ -1,43 +1,62 @@
+#include <fstream>
+#include <iostream>
+
 #include "MyString.hpp"
 
 int main(void) {
-  std::cout << "\n Демонстрация работы оператора сложения со строкой типа "
-               "char* и оператора присваивания: \n";
-  size_t arrlen = 9;
-  char *arr = new char[arrlen];
-  for (int i = 0; i < arrlen - 1; i++) {
-    arr[i] = (int)'0' + i;
+  std::cout << "\n Демонстрация работы операций ввода и вывода из потока: \n";
+  MyString str;
+  str.print_info();
+  std::cout << "введите строку: \n";
+  std::cin >> str;
+  std::cout << "введённая строка: \n";
+  std::cout << str << '\n';
+  str.print_info();
+
+  std::cout << "\n Демонстрация работы операций ввода и вывода из файлового "
+               "потока: \n";
+  char arr[] = "aaa";
+  MyString str1(arr);
+  str1.print_info();
+  std::ofstream f1("text.txt");
+  if (!f1) {
+    std::cout << "Ошибка открытия файла";
+    return 1;
   }
+  f1 << str1;
+  f1.close();
+  MyString str2;
+  str2.print_info();
+  std::ifstream f2("text.txt");
+  if (!f2) {
+    std::cout << "Ошибка открытия файла";
+    return 1;
+  }
+  f2 >> str2;
+  f2.close();
+  str2.print_info();
+
+  std::cout << "\n Демонстрация работы операций ввода и вывода из файлового "
+               "потока (в двоичном виде): \n";
   MyString str3(arr);
   str3.print_info();
-  str3 = str3 + arr;  // Вызов оператора сложения со строкой типа char* и
-  // оператора присваивания
-  str3.print_info();
-  str3 = arr + str3;
-  str3.print_info();
-
-  std::cout
-      << "\n Демонстрация работы оператора сложения 2-х объектов класса: \n";
-  MyString str4(arr);
-  str3.print_info();
-  str3 = str3 + str4;  // Вызов оператора сложения 2-х объектов класса
-  str3.print_info();
-
-  std::cout << "\n Демонстрация работы оператора вычитания как удаления "
-               "подстроки: \n";
-  str4.resize(4);
-  str3.print_info();
-  str3 = str3 - str4;  // Вызов оператора вычитания как удаления подстроки
-  str3.print_info();
-
-  std::cout << "\n Демонстрация работы операции индексирования: \n";
-  str3.print();
-  std::cout << "\n";
-  for (int i = 0; i < str3.size(); i += 5) {
-    char c = str3[i];  // Вызов операции индексирования
-    std::cout << "По индексу " << i << " находится символ " << c << "\n";
+  std::ofstream f3("text.dat");
+  if (!f3) {
+    std::cout << "Ошибка открытия файла";
+    return 1;
   }
+  f3 << str3;
+  f3.close();
+  MyString str4;
+  str4.print_info();
+  std::ifstream f4("text.dat");
+  if (!f4) {
+    std::cout << "Ошибка открытия файла";
+    return 1;
+  }
+  f4 >> str4;
+  f4.close();
+  str4.print_info();
 
-  delete[] arr;
   return 0;
 }
