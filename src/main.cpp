@@ -1,62 +1,37 @@
 #include <fstream>
 #include <iostream>
 
+#include "MyBinaryString.hpp"
 #include "MyString.hpp"
 
 int main(void) {
-  std::cout << "\n Демонстрация работы операций ввода и вывода из потока: \n";
-  MyString str;
+  std::cout << "\n Демонстрация работы конструкторов: \n";
+  MyBinaryString str;
   str.print_info();
-  std::cout << "введите строку: \n";
-  std::cin >> str;
-  std::cout << "введённая строка: \n";
-  std::cout << str << '\n';
-  str.print_info();
-
-  std::cout << "\n Демонстрация работы операций ввода и вывода из файлового "
-               "потока: \n";
-  char arr[] = "aaa";
-  MyString str1(arr);
+  char arr[] = "100101";
+  MyBinaryString str1(arr);
   str1.print_info();
-  std::ofstream f1("text.txt");
-  if (!f1) {
-    std::cout << "Ошибка открытия файла";
-    return 1;
-  }
-  f1 << str1;
-  f1.close();
-  MyString str2;
-  str2.print_info();
-  std::ifstream f2("text.txt");
-  if (!f2) {
-    std::cout << "Ошибка открытия файла";
-    return 1;
-  }
-  f2 >> str2;
-  f2.close();
+  MyBinaryString str2(str1);
   str2.print_info();
 
-  std::cout << "\n Демонстрация работы операций ввода и вывода из файлового "
-               "потока (в двоичном виде): \n";
-  MyString str3(arr);
-  str3.print_info();
-  std::ofstream f3("text.dat");
-  if (!f3) {
-    std::cout << "Ошибка открытия файла";
-    return 1;
-  }
-  f3 << str3;
-  f3.close();
-  MyString str4;
-  str4.print_info();
-  std::ifstream f4("text.dat");
-  if (!f4) {
-    std::cout << "Ошибка открытия файла";
-    return 1;
-  }
-  f4 >> str4;
-  f4.close();
-  str4.print_info();
+  std::cout << "\n Демонстрация работы нового метода: \n";
+  std::cout << str1.to_int() << "\n";
+
+  std::cout << "\n Демонстрация работы некоторых старых методов: \n";
+  str.resize(2);
+  str.print_info();
+  std::cout << str.size() << " " << str.max_size() << "\n";
+
+  std::cout << "\n Демонстрация работы некоторых переопределённых методов: \n";
+  str.append(arr);
+  str.print_info();
+  str.insert(3, arr);
+  str.print_info();
+
+  std::cout << "\n Демонстрация работы некоторых переопределённых "
+               "дружественных методов: \n";
+  str = arr + str1;
+  std::cout << str << "\n";
 
   return 0;
 }
