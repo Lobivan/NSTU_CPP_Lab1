@@ -16,7 +16,7 @@ std::istream &operator>>(std::istream &is, MyString &str) {
   size_t i = 0;
   char c;
   is >> std::noskipws >> c;
-  while (c != '\n') {
+  while (c != '\n' && c != '\0') {
     if (i == str.max_size()) {
       str.resize(str.max_size() * 2);
     }
