@@ -54,16 +54,15 @@ std::ifstream &operator>>(std::ifstream &is, MyString &str) {
 
 // операция вывода в файловый поток(в двоичном виде)
 void MyString::writeBinary(std::ofstream &os) {
+  os.write((char *)(&curSize), sizeof(int));
   os.write(data, sizeof(char) * curSize);
 }
 
 // операция ввода из файлового потока(в двоичном виде)
 void MyString::readBinary(std::ifstream &is) {
-  is.seekg(0, is.end);
-  int length = is.tellg();
-  is.seekg(0, is.beg);
-
-  resize(length);
-  is.read(data, length);
-  curSize = length;
+  int num;
+  is.read((char *)(&num), sizeof(int));
+  resize(num);
+  is.read(data, sizeof(char) * num);
+  curSize = num;
 }

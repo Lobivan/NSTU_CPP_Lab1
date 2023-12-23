@@ -42,7 +42,7 @@ int main(void) {
   char tarr[] = "Уборка";
   MyTaskString tstr1(tarr, 10, 12, false);
   tstr1.print_info();
-  MyTaskString tstr2(str1);
+  MyTaskString tstr2(tstr1);
   tstr2.print_info();
 
   std::cout << "\n Демонстрация работы новых метода: \n";
