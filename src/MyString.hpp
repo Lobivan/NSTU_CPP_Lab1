@@ -47,7 +47,7 @@ class MyString {
   char *to_char() const;
 
   // Метод вывода строки на экран
-  void print() const;
+  virtual void print() const;
 
   // Метод печати всей информации о строке
   void print_info() const;
@@ -66,6 +66,7 @@ class MyString {
 
   // операция индексирования
   char &operator[](size_t pos);
+  char operator[](size_t pos) const;
 
   // операция присваивания
   MyString &operator=(const MyString &other);

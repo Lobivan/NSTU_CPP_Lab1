@@ -36,6 +36,7 @@ MyString MyString::operator-(const MyString &str) const {
 
 // операция индексирования
 char &MyString::operator[](size_t pos) { return data[pos]; }
+char MyString::operator[](size_t pos) const { return data[pos]; }
 
 // операция присваивания
 MyString &MyString::operator=(const MyString &other) {

@@ -53,7 +53,7 @@ class MyBinaryString : public MyString {
   }
 
   // Новый метод
-  int to_int() {
+  int to_int() const {
     int res = 0;
     int pow_2 = 1;
     for (int i = size() - 1; i >= 0; i--) {
@@ -65,6 +65,14 @@ class MyBinaryString : public MyString {
 
   // Переопределение методов, как-либо изменяющих строку (добавление проверки
   // корректности новой строки)
+
+  virtual void print() const {
+    for (int i = 0; i < size(); i++) {
+      std::cout << (this->to_char())[i];
+    };
+    std::cout << " = " << to_int();
+  }
+
   MyString &append(char *arr) {
     if (is_char_arr_valid(arr)) {
       MyString::append(arr);

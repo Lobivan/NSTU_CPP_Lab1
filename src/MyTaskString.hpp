@@ -47,20 +47,12 @@ class MyTaskString : public MyString {
 
   // Переопределение методов
   // Метод вывода строки на экран
-  void print() const {
-    std::cout << start_h << " " << end_h << " " << is_done << " ";
+  virtual void print() const {
+    std::cout << start_h << " " << end_h << " " << std::boolalpha << is_done
+              << " ";
     for (int i = 0; i < size(); i++) {
       std::cout << (this->to_char())[i];
     };
-  }
-
-  // Метод печати всей информации о строке
-  void print_info() const {
-    std::cout << "размер строки: " << size() << "\n";
-    std::cout << "максимальный размер строки: " << max_size() << "\n";
-    std::cout << "строка: \'";
-    print();
-    std::cout << "\'\n";
   }
 
   MyString &operator=(const MyString &other) {
