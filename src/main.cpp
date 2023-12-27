@@ -7,22 +7,52 @@
 #include "MyTaskString.hpp"
 
 int main(void) {
+  std::cout << "\n  Демонстрация работы стека обьектов типа MyString\n";
   char arr[] = "100001";
   MyString str1(arr);
   MyTaskString str2(arr, 1, 2, false);
   MyBinaryString str3(arr);
 
-  MyStack stack;
-  stack.push(&str1);
-  stack.push(&str2);
-  stack.push(&str3);
+  MyStack<MyString> myStringStack;
+  myStringStack.push(&str1);
+  myStringStack.push(&str2);
+  myStringStack.push(&str3);
 
-  std::cout << " Демонстрация полиморфического поведения классов:\n";
-  std::cout << "В стеке все строки хранятся как указатели на MyString, однако, "
-               "поскольку функция print() виртуальная, "
-               "при её вызове у данных указтелей вызывается "
-               "именно фунция изначального объекта, а не только MyString:\n";
-  stack.printAll();
+  while (myStringStack.is_empty() == false) {
+    myStringStack.top()->print();
+    std::cout << "\n";
+    myStringStack.pop();
+  }
+
+  std::cout << "\n  Демонстрация работы стека обьектов типа int\n";
+  int a = 1;
+  int b = -5;
+  int c = 12345;
+
+  MyStack<int> intStack;
+  intStack.push(&a);
+  intStack.push(&b);
+  intStack.push(&c);
+
+  while (intStack.is_empty() == false) {
+    std::cout << *(intStack.top()) << "\n";
+    intStack.pop();
+  }
+
+  std::cout << "\n  Демонстрация работы стека обьектов типа float\n";
+  float d = 1.234;
+  float e = -5.678;
+  float f = 12345.6;
+
+  MyStack<float> floatStack;
+  floatStack.push(&d);
+  floatStack.push(&e);
+  floatStack.push(&f);
+
+  while (floatStack.is_empty() == false) {
+    std::cout << *(floatStack.top()) << "\n";
+    floatStack.pop();
+  }
 
   return 0;
 }
