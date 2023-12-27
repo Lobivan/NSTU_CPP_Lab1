@@ -1,4 +1,4 @@
-#include <fstream>
+#include <exception>
 #include <iostream>
 
 #include "MyBinaryString.hpp"
@@ -7,22 +7,36 @@
 #include "MyTaskString.hpp"
 
 int main(void) {
-  char arr[] = "100001";
+  char arr[] = "abcd";
   MyString str1(arr);
-  MyTaskString str2(arr, 1, 2, false);
-  MyBinaryString str3(arr);
+  MyBinaryString str2;
+  MyTaskString str3;
 
-  MyStack stack;
-  stack.push(&str1);
-  stack.push(&str2);
-  stack.push(&str3);
+  std::cout << "  Демонстрация обработки исключений:\n";
 
-  std::cout << " Демонстрация полиморфического поведения классов:\n";
-  std::cout << "В стеке все строки хранятся как указатели на MyString, однако, "
-               "поскольку функция print() виртуальная, "
-               "при её вызове у данных указтелей вызывается "
-               "именно фунция изначального объекта, а не только MyString:\n";
-  stack.printAll();
+  std::cout << "\n Выход за границу массива(строки):\n";
+  try {
+    for (int i = 0; i < 10; i++) {
+      std::cout << str1[i] << "\n";
+    }
+  } catch (std::exception &e) {
+    std::cerr << "exeption: " << e.what() << "\n";
+  }
+
+  std::cout << "\n Попытка записать в бинарную строку что-то кроме 0 или 1:\n";
+  try {
+    str2.append(arr);
+  } catch (std::exception &e) {
+    std::cerr << "exeption: " << e.what() << "\n";
+  }
+
+  std::cout << "\n Попытка указать некорректное время начала или конца в "
+               "строке-задании:\n";
+  try {
+    str3.setStartHour(25);
+  } catch (std::exception &e) {
+    std::cerr << "exeption: " << e.what() << "\n";
+  }
 
   return 0;
 }

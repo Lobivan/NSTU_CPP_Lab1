@@ -1,3 +1,5 @@
+#include <exception>
+
 #include "MyString.hpp"
 
 // сложение со строкой типа char*
@@ -35,8 +37,18 @@ MyString MyString::operator-(const MyString &str) const {
 }
 
 // операция индексирования
-char &MyString::operator[](size_t pos) { return data[pos]; }
-char MyString::operator[](size_t pos) const { return data[pos]; }
+char &MyString::operator[](size_t pos) {
+  if (pos >= curSize) {
+    throw std::out_of_range("index out of range");
+  }
+  return data[pos];
+}
+char MyString::operator[](size_t pos) const {
+  if (pos >= curSize) {
+    throw std::out_of_range("index out of range");
+  }
+  return data[pos];
+}
 
 // операция присваивания
 MyString &MyString::operator=(const MyString &other) {

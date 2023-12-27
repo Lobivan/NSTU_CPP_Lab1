@@ -1,37 +1,49 @@
 #pragma once
 
 #include <cstring>
+#include <exception>
 
 #include "MyString.hpp"
 
 class MyBinaryString : public MyString {
  protected:
   // Методы для проверки введённой строки и её очистки в случае ошибки
-  int is_char_arr_valid(char *arr) const {
-    int res = 1;
+  bool is_char_arr_valid(char *arr) const {
+    int res = true;
     for (int i = 0; i < strlen(arr); i++) {
       if (arr[i] != '1' && arr[i] != '0') {
-        res = 0;
+        res = false;
         break;
       }
     }
     return res;
   }
-  int is_valid() {
-    int res = 1;
+  bool is_valid() const {
+    int res = true;
     for (int i = 0; i < size(); i++) {
       if (operator[](i) != '1' && operator[](i) != '0') {
-        res = 0;
+        res = false;
         break;
       }
     }
     return res;
   }
-  void destroy_if_invalid() {
-    if (is_valid() == 0) {
-      erase();
-      std::cout << "Ошибка: Строка должна содержать только символы 0 или 1\n";
+  void invalid_arg_exeption() {
+    throw std::invalid_argument(
+        "Строка должна содержать только символы 0 или 1");
+  }
+  void exeption_if_invalid() {
+    if (is_valid() == false) {
+      invalid_arg_exeption();
     }
+  }
+  void exeption_if_invalid(const MyString &other) {
+    char *tmp = other.to_char();
+    if (is_char_arr_valid(tmp) == false) {
+      delete[] tmp;
+      invalid_arg_exeption();
+    }
+    delete[] tmp;
   }
 
  public:
@@ -44,12 +56,12 @@ class MyBinaryString : public MyString {
 
   MyBinaryString(char *arr)  // Конструктор с параметром массива символов
       : MyString(arr) {
-    destroy_if_invalid();
+    exeption_if_invalid();
   }
 
   MyBinaryString(const MyString &other)  // Конструктор копирования
       : MyString(other) {
-    destroy_if_invalid();
+    exeption_if_invalid();
   }
 
   // Новый метод
@@ -77,37 +89,28 @@ class MyBinaryString : public MyString {
     if (is_char_arr_valid(arr)) {
       MyString::append(arr);
     } else {
-      std::cout << "Ошибка: Строка должна содержать только символы 0 или 1\n";
+      invalid_arg_exeption();
     }
     return *this;
   }
 
   MyString &insert(size_t pos, const MyString &str) {
-    if (is_char_arr_valid(str.to_char())) {
-      MyString::insert(pos, str);
-    } else {
-      std::cout << "Ошибка: Строка должна содержать только символы 0 или 1\n";
-    }
+    exeption_if_invalid(str);
+    MyString::insert(pos, str);
     return *this;
   }
 
   MyString &operator=(const MyString &other) {
-    if (is_char_arr_valid(other.to_char())) {
-      MyString::operator=(other);
-    } else {
-      std::cout << "Ошибка: Строка должна содержать только символы 0 или 1\n";
-    }
+    exeption_if_invalid(other);
+    MyString::operator=(other);
     return *this;
   }
 
   void readBinary(std::ifstream &is) {
     MyString tmp;
     tmp.readBinary(is);
-    if (is_char_arr_valid(tmp.to_char())) {
-      *this = tmp;
-    } else {
-      std::cout << "Ошибка: Строка должна содержать только символы 0 или 1\n";
-    }
+    exeption_if_invalid(tmp);
+    *this = tmp;
   }
 
   // Дружественные методы не наследуются, поэтому их необходимо переопределить
@@ -123,11 +126,8 @@ class MyBinaryString : public MyString {
   friend std::istream &operator>>(std::istream &is, MyBinaryString &str) {
     MyString tmp;
     is >> tmp;
-    if (str.is_char_arr_valid(tmp.to_char())) {
-      str = tmp;
-    } else {
-      std::cout << "Ошибка: Строка должна содержать только символы 0 или 1\n";
-    }
+    str.exeption_if_invalid(tmp);
+    str = tmp;
     return is;
   }
   friend std::ofstream &operator<<(std::ofstream &os, MyBinaryString &str) {
@@ -137,11 +137,8 @@ class MyBinaryString : public MyString {
   friend std::ifstream &operator>>(std::ifstream &is, MyBinaryString &str) {
     MyString tmp;
     is >> tmp;
-    if (str.is_char_arr_valid(tmp.to_char())) {
-      str = tmp;
-    } else {
-      std::cout << "Ошибка: Строка должна содержать только символы 0 или 1\n";
-    }
+    str.exeption_if_invalid(tmp);
+    str = tmp;
     return is;
   }
 };

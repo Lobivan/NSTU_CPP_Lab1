@@ -4,45 +4,73 @@
 
 class MyTaskString : public MyString {
  private:
-  // Правильность ввода начала и конца работы не проверяется
   int start_h;   // Начало работы (час)
   int end_h;     // Конец работы (час)
   bool is_done;  // Признак выполнения
 
+  void check_hours() {
+    if (start_h < 0 || start_h > 24 || end_h < 0 || end_h > 24 ||
+        start_h > end_h) {
+      throw std::invalid_argument(
+          "Время начала и конца задачи должны быть от 0 до 24, время начала не "
+          "должно превышать время конца");
+    }
+  }
+
  public:
   // Конструкторы нового класса
   MyTaskString()  // Конструктор по умолчанию
-      : MyString(), start_h(-1), end_h(-1), is_done(false) {}
+      : MyString(), start_h(0), end_h(0), is_done(false) {
+    check_hours();
+  }
 
   MyTaskString(size_t size)  // Конструктор с параметром размера
-      : MyString(size), start_h(-1), end_h(-1), is_done(false) {}
+      : MyString(size), start_h(0), end_h(0), is_done(false) {
+    check_hours();
+  }
 
   MyTaskString(char *arr)  // Конструктор с параметром массива символов
-      : MyString(arr), start_h(-1), end_h(-1), is_done(false) {}
+      : MyString(arr), start_h(0), end_h(0), is_done(false) {
+    check_hours();
+  }
 
   MyTaskString(const MyString &other)  // Конструктор копирования
-      : MyString(other), start_h(-1), end_h(-1), is_done(false) {}
+      : MyString(other), start_h(0), end_h(0), is_done(false) {
+    check_hours();
+  }
 
   MyTaskString(char *arr, int start, int end,
                bool done)  // Конструктор с параметрами
-      : MyString(arr), start_h(start), end_h(end), is_done(done) {}
+      : MyString(arr), start_h(start), end_h(end), is_done(done) {
+    check_hours();
+  }
 
   MyTaskString(const MyString &other, int start, int end,
                bool done)  // Конструктор копирования
-      : MyString(other), start_h(start), end_h(end), is_done(done) {}
+      : MyString(other), start_h(start), end_h(end), is_done(done) {
+    check_hours();
+  }
 
   MyTaskString(const MyTaskString &other)  // Конструктор копирования
       : MyString(other),
         start_h(other.start_h),
         end_h(other.end_h),
-        is_done(other.is_done) {}
+        is_done(other.is_done) {
+    check_hours();
+  }
 
   // Новые методы
   int getStartHour() { return start_h; }
   int getEndHour() { return end_h; }
   bool isDone() { return is_done; }
-  void setStartHour(int hour) { start_h = hour; }
-  void setEndHour(int hour) { end_h = hour; }
+  void setStartHour(int hour) {
+    start_h = hour;
+    check_hours();
+  }
+  void setEndHour(int hour) {
+    end_h = hour;
+    check_hours();
+  }
   void setCompletion(bool isdone) { is_done = isdone; }
 
   // Переопределение методов
@@ -57,8 +85,8 @@ class MyTaskString : public MyString {
 
   MyString &operator=(const MyString &other) {
     MyString::operator=(other);
-    start_h = -1;
-    end_h = -1;
+    start_h = 0;
+    end_h = 0;
     is_done = false;
     return *this;
   }
@@ -95,6 +123,7 @@ class MyTaskString : public MyString {
     is >> tmp;
     str.erase();
     str.append(tmp);
+    str.check_hours();
     return is;
   }
   friend std::ofstream &operator<<(std::ofstream &os, MyTaskString &str) {
@@ -112,6 +141,7 @@ class MyTaskString : public MyString {
     is >> tmp;
     str.erase();
     str.append(tmp);
+    str.check_hours();
     return is;
   }
 };
