@@ -60,6 +60,7 @@ void MyString::resize(size_t n) {
 MyString &MyString::append(char *arr) {
   size_t arrlen = strlen(arr);
   while (size() + arrlen > max_size()) {
+    if (max_size() == 0) maxSize = 1;
     resize(max_size() * 2);
   }
   for (int i = 0; i < arrlen; i++) {

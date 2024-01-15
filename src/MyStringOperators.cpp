@@ -49,3 +49,40 @@ MyString &MyString::operator=(const MyString &other) {
   }
   return *this;
 }
+
+// операция сравнения
+bool MyString::operator==(const MyString &other) {
+  bool res = true;
+  if (this != &other) {
+    if (size() != other.size()) {
+      res = false;
+    } else {
+      for (int i = 0; i < size(); i++) {
+        if (data[i] != other.data[i]) {
+          res = false;
+          break;
+        }
+      }
+    }
+  }
+  return res;
+}
+bool MyString::operator<(const MyString &other) {
+  bool res = false;
+  if (this != &other) {
+    if (size() != other.size()) {
+      res = (size() < other.size());
+    } else {
+      for (int i = 0; i < size(); i++) {
+        if (data[i] < other.data[i]) {
+          res = true;
+          break;
+        }
+        if (data[i] > other.data[i]) {
+          break;
+        }
+      }
+    }
+  }
+  return res;
+}
