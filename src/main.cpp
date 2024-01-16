@@ -5,10 +5,7 @@
 #include <iostream>
 #include <map>
 
-#include "MyBinaryString.hpp"
-#include "MyStack.hpp"
 #include "MyString.hpp"
-#include "MyTaskString.hpp"
 
 #define N 5000
 #define SIGNS 7
@@ -30,8 +27,8 @@ void deque_push(MyString* my_arr) {
   std::deque<MyString> d1;
   auto start1 = high_resolution_clock::now();
   for (int i = 0; i < N; i++) {
-    d1.push_back(MyString(my_arr[i]));
-    d1.push_front(MyString(my_arr[i]));
+    d1.push_back(my_arr[i]);
+    d1.push_front(my_arr[i]);
   }
   auto end1 = high_resolution_clock::now();
   auto duration1 = duration_cast<microseconds>(end1 - start1);
@@ -126,6 +123,88 @@ void deque_sort(MyString* my_arr) {
             << "\n\n";
 }
 
+void multimap_push(MyString* my_arr) {
+  std::multimap<int, int> m;
+  auto start = high_resolution_clock::now();
+  for (int i = 0; i < N; i++) {
+    m.insert({i % STEP, i});
+  }
+  auto end = high_resolution_clock::now();
+  auto duration = duration_cast<microseconds>(end - start);
+  std::cout << "Время добавления int в multimap: " << duration.count() << '\n';
+
+  std::multimap<MyString, MyString> m1;
+  auto start1 = high_resolution_clock::now();
+  for (int i = 0; i < N; i++) {
+    m1.insert({my_arr[i], my_arr[i]});
+  }
+  auto end1 = high_resolution_clock::now();
+  auto duration1 = duration_cast<microseconds>(end1 - start1);
+  std::cout << "Время добавления MyString в multimap: " << duration1.count()
+            << "\n\n";
+}
+
+void multimap_pop(MyString* my_arr) {
+  std::multimap<int, int> m;
+  for (int i = 0; i < N; i++) {
+    m.insert({i % STEP, i});
+  }
+  std::multimap<MyString, MyString> m1;
+  for (int i = 0; i < N; i++) {
+    m1.insert({my_arr[i], my_arr[i]});
+  }
+
+  auto start = high_resolution_clock::now();
+  for (auto it = m.begin(); it != m.end();) {
+    it = m.erase(it);
+  }
+  auto end = high_resolution_clock::now();
+  auto duration = duration_cast<microseconds>(end - start);
+  std::cout << "Время удаления int из multimap: " << duration.count() << '\n';
+
+  auto start1 = high_resolution_clock::now();
+  for (auto it = m1.begin(); it != m1.end();) {
+    it = m1.erase(it);
+  }
+  auto end1 = high_resolution_clock::now();
+  auto duration1 = duration_cast<microseconds>(end1 - start1);
+  std::cout << "Время удаления MyString из multimap: " << duration1.count()
+            << "\n\n";
+}
+
+void multimap_search(MyString* my_arr) {
+  std::multimap<int, int> m;
+  for (int i = 0; i < N; i++) {
+    m.insert({i, i});
+  }
+  std::multimap<MyString, MyString> m1;
+  for (int i = 0; i < N; i++) {
+    m1.insert({my_arr[i], my_arr[i]});
+  }
+
+  auto start = high_resolution_clock::now();
+  for (int i = 0; i < N; i++) {
+    m.find(i);
+  }
+  auto end = high_resolution_clock::now();
+  auto duration = duration_cast<microseconds>(end - start);
+  std::cout << "Время поиска int в multimap: " << duration.count() << '\n';
+
+  auto start1 = high_resolution_clock::now();
+  for (int i = 0; i < N; i++) {
+    m1.find(my_arr[i]);
+  }
+  auto end1 = high_resolution_clock::now();
+  auto duration1 = duration_cast<microseconds>(end1 - start1);
+  std::cout << "Время поиска MyString в multimap: " << duration1.count()
+            << "\n\n";
+}
+
+void multimap_sort(MyString* my_arr) {
+  std::cout << "Порядок элементов в multimap нельзя изменять, поэтому "
+               "временной анализ сортировки не был проведён\n";
+}
+
 void int_to_char(char* arr, int n) {
   for (int i = SIGNS - 1; i >= 0; i--) {
     arr[i] = '0' + (n % 10);
@@ -141,9 +220,15 @@ int main(void) {
     int_to_char(tmp, rand() % N);
     my_arr[i].append(tmp);
   }
+  std::cout << "    deque:\n\n";
   deque_push(my_arr);
   deque_pop(my_arr);
   deque_search(my_arr);
   deque_sort(my_arr);
+  std::cout << "    multimap:\n\n";
+  multimap_push(my_arr);
+  multimap_pop(my_arr);
+  multimap_search(my_arr);
+  multimap_sort(my_arr);
   return 0;
 }

@@ -51,7 +51,7 @@ MyString &MyString::operator=(const MyString &other) {
 }
 
 // операция сравнения
-bool MyString::operator==(const MyString &other) {
+bool MyString::operator==(const MyString &other) const {
   bool res = true;
   if (this != &other) {
     if (size() != other.size()) {
@@ -67,7 +67,7 @@ bool MyString::operator==(const MyString &other) {
   }
   return res;
 }
-bool MyString::operator<(const MyString &other) {
+bool MyString::operator<(const MyString &other) const {
   bool res = false;
   if (this != &other) {
     if (size() != other.size()) {

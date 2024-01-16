@@ -72,8 +72,8 @@ class MyString {
   MyString &operator=(const MyString &other);
 
   // операция сравнения
-  bool operator==(const MyString &other);
-  bool operator<(const MyString &other);
+  bool operator==(const MyString &other) const;
+  bool operator<(const MyString &other) const;
 
   // операция вывода в поток
   friend std::ostream &operator<<(std::ostream &os, MyString &str);
